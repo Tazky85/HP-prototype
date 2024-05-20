@@ -1,0 +1,557 @@
+@charset "UTF-8";
+
+html,
+body {
+  width: 100%;
+  height: 100vh;
+  font-family: "great vibes","Noto Serif JP", serif;
+  color: #333333;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+/* =======文字を１文字ずつ出現させるCSS============== */
+
+.textAnime span{
+  opacity: 0;
+}
+
+.textAnime.appeartext span{
+  animation: text_anime_on 2s ease-out forwards;
+  animation-delay: 3s;
+}
+
+@keyframes text_anime_on {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* 共通部分 */
+
+#container {
+  position: relative;
+  z-index: 2;
+  background-color: #ffffff;
+  /* background-image: url(../images/bg-image4.jpg); */
+  background-repeat: repeat;
+  padding: 64px 64px;
+  /* width: 90%;
+  margin: 0 auto; */
+}
+
+.inner {
+  width: 100%;
+  margin: 0 auto;
+  /* padding: 70px; */
+}
+
+@media screen and (max-width:768px) {
+  .inner {
+      padding: 30px;
+  }
+  }
+
+h2 {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.8;
+}
+
+h3 {
+  font-size: 32px;
+  font-weight: 500;
+  padding-bottom: 4px;
+  text-align: center;
+}
+
+#heading h2 {
+  font-size: 48px;
+  font-weight: 700;
+  padding-bottom: 4px;
+  text-align: center;
+}
+
+#heading h2::before {
+  content: '- ';
+}
+
+#heading h2::after {
+  content: ' -';
+}
+
+#heading p {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333333;
+  line-height: 1.4;
+  padding-bottom: 24px;
+  opacity: 0.7;
+  text-align: center;
+}
+
+/* 共通ボタンの設定 */
+.btn {
+  position: relative;
+  display: inline-block;
+  padding: 8px 16px;
+  color: #333333;
+  font-size: 16px;
+  border: 1px solid #333333;
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+  text-decoration: none;
+  outline: none;
+  overflow: hidden;
+  text-align: center;
+  transition: .3s ease-in-out;
+  box-sizing: border-box;
+}
+
+/* ボタン内 */
+.btn span {
+  position: relative;
+  z-index: 3;
+  color: #333333;
+}
+
+.btn:hover span {
+  color: #ffffff;
+}
+
+/* ボタンの中央から背景が流れる */
+.bgcentery:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  background-color: rgba(166, 183, 223,0.8);
+  width: 100%;
+  height: 100%;
+  transition: transform .3s cubic-bezier(0.8, 0, 0.2, 1) 0s;
+  transform: scale(1, 0);
+  transform-origin: center;
+}
+
+.bgcentery:hover:before {
+  transform: scale(1, 1);
+}
+
+
+/*============ ページレイアウト共通部分 ================*/
+
+/*============ ヘッダー部分 ================*/
+
+/* ナビ背景コンテンツのぼかしCSS */
+
+.mainblur {
+  filter: blur(8px);
+}
+
+/* ハンバーガーメニューのCSS */
+
+/*ボタン外側*/
+.openbtn {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  top: 10px;
+  right: 10px;
+  z-index: 9999;
+}
+
+/*ボタン内側*/
+.openbtn span {
+  display: inline-block;
+  transition: all .4s; 
+  position: absolute;
+  left: 13px;
+  height: 3px;
+  background-color: #666;
+}
+
+.openbtn span:nth-of-type(1) {
+  top: 22px;
+  width: 50%;
+}
+
+.openbtn span:nth-of-type(2) {
+  top: 29px;
+  width: 30%;
+}
+
+/* 付与されるactiveクラス */
+
+.openbtn.active span:nth-of-type(1) {
+  top: 20px;
+  left: 16px;
+  transform: translateY(6px) rotate(-45deg);
+  width: 35%;
+}
+
+.openbtn.active span:nth-of-type(2) {
+  top: 32px;
+  left: 16px;
+  transform: translateY(-6px) rotate(45deg);
+  width: 35%;
+}
+
+/* =======GLBナビゲーションのCSS============== */
+
+#g-nav {
+  position: fixed;
+  z-index: -1;
+  opacity: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(166, 183, 223,0.8);
+  transition: all .3s;
+}
+
+/* アクティブクラスが付いたら透過なしにレイヤーの最前面へ */
+
+#g-nav.panelactive {
+  opacity: 1;
+  z-index: 999;
+}
+
+/* ナビゲーションの縦スクロール */
+#g-nav.panelactive #g-nav-list {
+  /*メニュー数が増えた場合の縦スクロール*/
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+}
+
+/*ナビゲーション部分のCSS*/
+#g-nav ul {
+  display: none; 
+  position: absolute;
+  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#g-nav.panelactive ul {
+  display: block;
+}
+
+#g-nav li {
+  list-style: none;
+  text-align: center;
+}
+
+#g-nav li > a {
+  display: block;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 12px;
+  font-size: 36px;
+  font-weight: 400;
+}
+
+#g-nav li > a:hover {
+  opacity: 0.5;
+  transition: .3s ease-in-out;
+}
+
+/* =======スクロールダウンボタンのCSS============== */
+
+.scroll-down {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  z-index: 2;
+}
+
+.scroll-down span {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  color: #ffffff;
+  font-size: 24px;
+  letter-spacing: 0.05em;
+  -ms-writing-mode: tb-rl;
+  -webkit-writing-mode: vertical-rl;
+  writing-mode: vertical-rl;
+}
+
+/* スクロールダウンシンボルの円の描写 */
+.scroll-down:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  animation: circlemove 1.6s ease-in-out infinite,
+  circlemovehide 1.6s ease-in-out infinite;
+}
+
+@keyframes circlemove {
+  0% {
+    bottom: 64px;
+  }
+
+  100% {
+    bottom: -6px;
+  }
+}
+
+@keyframes circlemovehide {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* スクロールダウンシンボルの線の描写 */
+.scroll-down:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  height: 68px;
+  background-color: #ffffff;
+}
+
+
+/* ========メインエリア共通のCSS============== */
+
+/* 共通部分 */
+
+#container {
+  position: relative;
+  z-index: 2;
+  background-color: #ffffff;
+  /* background-image: url(../images/bg-image4.jpg); */
+  background-repeat: repeat;
+  padding: 64px 64px;
+  /* width: 90%;
+  margin: 0 auto; */
+}
+
+.inner {
+  width: 100%;
+  margin: 0 auto;
+  /* padding: 70px; */
+}
+
+@media screen and (max-width:768px) {
+  .inner {
+      padding: 30px;
+  }
+  }
+
+h2 {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.8;
+}
+
+h3 {
+  font-size: 32px;
+  font-weight: 500;
+  padding-bottom: 4px;
+  text-align: center;
+}
+
+#heading h2 {
+  font-size: 48px;
+  font-weight: 700;
+  padding-bottom: 4px;
+  text-align: center;
+}
+
+#heading h2::before {
+  content: '- ';
+}
+
+#heading h2::after {
+  content: ' -';
+}
+
+#heading p {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333333;
+  line-height: 1.4;
+  padding-bottom: 32px;
+  opacity: 0.7;
+  text-align: center;
+}
+
+/* 共通ボタンの設定 */
+.btn {
+  position: relative;
+  display: inline-block;
+  padding: 8px 16px;
+  color: #333333;
+  font-size: 16px;
+  border: 1px solid #333333;
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+  text-decoration: none;
+  outline: none;
+  overflow: hidden;
+  text-align: center;
+  transition: .3s ease-in-out;
+  box-sizing: border-box;
+}
+
+/* ボタン内 */
+.btn span {
+  position: relative;
+  z-index: 3;
+  color: #333333;
+}
+
+.btn:hover span {
+  color: #ffffff;
+}
+
+/* ボタンの中央から背景が流れる */
+.bgcentery:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  background-color: rgba(166, 183, 223,0.8);
+  width: 100%;
+  height: 100%;
+  transition: transform .3s cubic-bezier(0.8, 0, 0.2, 1) 0s;
+  transform: scale(1, 0);
+  transform-origin: center;
+}
+
+.bgcentery:hover:before {
+  transform: scale(1, 1);
+}
+
+/* =======page-about.phpとなる部分 =======*/
+
+#container {
+  margin: 0 auto 64px;
+  text-align: center;
+}
+
+#container .row {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+#container .col-1 {
+  width: 50%;
+  min-height: 400px;
+}
+
+#container .col-1 img {
+  width: 100%;
+  height: auto;
+}
+
+#container .col-2 {
+  width: 50%;
+}
+
+#container .sub_heading {
+  font-size: 16px;
+  padding-bottom: 24px;
+}
+
+#container .profile {
+  text-align: left;
+  line-height: 1.6;
+  letter-spacing: 0,7rem;
+  padding-bottom: 36px;
+}
+
+#container .profile span {
+  letter-spacing: -0.1rem;
+}
+
+
+
+
+/* フッター */
+
+#container,
+#footer {
+  position: relative;
+  z-index: 3;
+  background-color: #fff;
+}
+
+#footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #666;
+  padding:64px;
+}
+
+#footer small {
+  text-align: center;
+    margin: 20px 0 0 0;
+    display: block;
+    width: 100%;
+    font-size: 0.7rem;
+}
+
+#footer #page-top span {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-top: 4px solid #fff;
+  border-left: 4px solid #fff;
+  transform: rotate(45deg);
+}
+  
+
+
+@media screen and (max-width:768px) {
+
+  #footer small{
+    text-align: right;
+    margin: 20px 0 0 0;
+    display: block;
+    width: 100%;
+    font-size: 0.7rem;
+  }
+}
+
+
+
+
+
